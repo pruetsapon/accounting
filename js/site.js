@@ -38,9 +38,11 @@ function InitializeApp() {
 
 function mainPage() {
     $('#container').load('includes/main.html');
+    $('#header').html('<span id="display-name">' + sessionStorage.displayName + '</span> (<a href="#" onclick="signOut()">ออกจากระบบ</a>)');
 }
 
 function signInPage() {
+    $('#header').html('');
     $('#container').load('includes/signin.html');
 }
 
