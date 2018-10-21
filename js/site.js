@@ -39,6 +39,13 @@ function InitializeApp() {
 function mainPage() {
     $('#container').load('includes/main.html');
     $('#header').html('<span id="display-name">' + sessionStorage.displayName + '</span> (<a href="#" onclick="signOut()">ออกจากระบบ</a>)');
+    firebase.database().ref("accountings/" + uid + "/").once('value').then(function(data) {
+        if(data.val() != null) {
+
+        } else {
+            
+        }
+    });
 }
 
 function signInPage() {
@@ -48,6 +55,10 @@ function signInPage() {
 
 function registerPage() {
     $('#container').load('includes/register.html');
+}
+
+function resetPasseordPage() {
+    $('#container').load('includes/resetpass.html');
 }
 
 var userN = "Johnx";
@@ -150,6 +161,7 @@ function verificationEmail() {
 }
 
 function resetPassword() {
+    let email = $('input[name=email]').val();
     firebase.auth().sendPasswordResetEmail(email).then(function() {
         // Email sent.
     }).catch(function(error) {
