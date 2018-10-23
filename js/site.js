@@ -24,10 +24,6 @@ function InitializeApp() {
         firebase.initializeApp(config);
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
-                sessionStorage.displayName = user.displayName;
-                sessionStorage.email = user.email;
-                sessionStorage.photoURL = user.photoURL;
-                sessionStorage.uid = user.uid;
                 mainPage();
             } else {
                 signInPage();
@@ -36,14 +32,22 @@ function InitializeApp() {
     });
 }
 
-function mainPage() {
-    $('#container').load('includes/main.html');
-    $('#header').html('<span id="display-name">' + sessionStorage.displayName + '</span> (<a href="#" onclick="signOut()">ออกจากระบบ</a>)');
-    firebase.database().ref("accountings/" + uid + "/").once('value').then(function(data) {
-        if(data.val() != null) {
+function InitializeCategories(uid) {
+    $.getJSON("initialize/categories.json", function(data) {
+        firebase.database().ref("categories/" + uid + "/").set (data);
+    });
+}
 
+function mainPage() {
+    let uid = sessionStorage.uid;
+    let displayName = sessionStorage.displayName;
+    $('#container').load('includes/main.html');
+    $('#header').html('<span id="display-name">' + displayName + '</span> (<a href="#" onclick="signOut()">ออกจากระบบ</a>)');
+    firebase.database().ref("accountings/" + uid + "/").once('value').then(function(data) {
+        if(data.val()) {
+            console.log(555555);
         } else {
-            
+            console.log(666666);
         }
     });
 }
@@ -59,6 +63,14 @@ function registerPage() {
 
 function resetPasseordPage() {
     $('#container').load('includes/resetpass.html');
+}
+
+function expensesPage() {
+    $('#container').load('includes/expenses.html');
+}
+
+function incomePage() {
+    $('#container').load('includes/income.html');
 }
 
 var userN = "Johnx";
@@ -81,14 +93,18 @@ var userN = "Johnx";
 //   console.log(data.val());
 // });
 
+function storage(user) {
+    sessionStorage.displayName = user.displayName;
+    sessionStorage.email = user.email;
+    sessionStorage.photoURL = user.photoURL;
+    sessionStorage.uid = user.uid;
+}
+
 function signIn() {
     let email = $('input[name=email]').val();
     let password = $('input[name=password]').val();
     firebase.auth().signInWithEmailAndPassword(email, password).then(function(user) {
-        sessionStorage.displayName = user.displayName;
-        sessionStorage.email = user.email;
-        sessionStorage.photoURL = user.photoURL;
-        sessionStorage.uid = user.uid;
+        storage(user);
         mainPage();
     }).catch(function(error) {
         console.log(error.message);
@@ -111,18 +127,27 @@ function register() {
     let password = $('input[name=password]').val();
     let confirmPassword = $('input[name=confirmPassword]').val();
     let verifRegister = verificationRegister(name, lastname, email, password, confirmPassword);
+    let displayName = name + " " + lastname;
     if(verifRegister) {
-        firebase.auth().createUserWithEmailAndPassword(email, password).then(function(data) {
+        firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user) {
             let json = {
                 email: email,
                 name: name,
                 lastname: lastname
             };
-            firebase.database().ref("users/" + data.user.uid + "/").set (json);
+            firebase.database().ref("users/" + user.uid + "/").set (json);
+            storage(user);
+            updateDisplayName(displayName);
+            InitializeCategories(user.uid);
         }).catch(function(error) {
             console.log(error.message);
         });
     }
+}
+
+function updateDisplayName(displayName) {
+    firebase.auth().currentUser.updateProfile({displayName: displayName});
+    sessionStorage.displayName = displayName;
 }
 
 function verificationRegister(name, lastname, email, password, confirmPassword) {
