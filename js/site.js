@@ -38,18 +38,21 @@ function InitializeCategories(uid) {
     });
 }
 
-function mainPage() {
-    let uid = sessionStorage.uid;
+function loadHeader() {
     let displayName = sessionStorage.displayName;
-    $('#container').load('includes/main.html');
     $('#header').html('<span id="display-name">' + displayName + '</span> (<a href="#" onclick="signOut()">ออกจากระบบ</a>)');
-    firebase.database().ref("accountings/" + uid + "/").once('value').then(function(data) {
+}
+
+function mainPage() {
+    $('#container').load('includes/main.html');
+    firebase.database().ref("accountings/" + sessionStorage.uid + "/").once('value').then(function(data) {
         if(data.val()) {
             console.log(555555);
         } else {
             console.log(666666);
         }
     });
+    loadHeader();
 }
 
 function signInPage() {
@@ -67,10 +70,28 @@ function resetPasseordPage() {
 
 function expensesPage() {
     $('#container').load('includes/expenses.html');
+    firebase.database().ref("categories/" + uid + "/expenses").once('value').then(function(data) {
+        $.each(data.val(), function( index, value ) {
+            $("#expenses-group").append($('<option>', { 
+                value: value.code,
+                text : value.name 
+            }));
+        });
+        sessionStorage.lastExpenses = data.val().length;
+    });
 }
 
 function incomePage() {
     $('#container').load('includes/income.html');
+    firebase.database().ref("categories/" + uid + "/income").once('value').then(function(data) {
+        $.each(data.val(), function( index, value ) {
+            $("#income-group").append($('<option>', { 
+                value: value.code,
+                text : value.name 
+            }));
+        });
+        sessionStorage.lastIncome = data.val().length;
+    });
 }
 
 var userN = "Johnx";
@@ -189,6 +210,24 @@ function resetPassword() {
     let email = $('input[name=email]').val();
     firebase.auth().sendPasswordResetEmail(email).then(function() {
         // Email sent.
+    }).catch(function(error) {
+        console.log(error.message);
+    });
+}
+
+function createIncome() {
+    let json = {
+        typeCode: 2,
+        typeName: "รายรับ",
+        groupName: $('#income-group :selected').text(),
+        groupCode: $('#income-group').val(),
+        value: $('input[name=value]').val(),
+        date: $('input[name=date]').val()
+    };
+    let d = new Date();
+    let iid = d.getFullYear() + "" + d.getMonth() + "" + d.getDate() + "" + d.getHours() + "" + d.getMinutes() + "" + d.getSeconds() + "" + d.getMilliseconds();
+    firebase.database().ref("accountings/" + sessionStorage.uid + "/" + iid).set (json).then(function() {
+        mainPage();
     }).catch(function(error) {
         console.log(error.message);
     });
