@@ -1,14 +1,11 @@
 Accounting Web
-Detail : Accounting Web is a web appliction. Use to manage your accounting.
-Status : Developing
-
-Prerequisites:
-- Firebase
-
 =====================================
+Detail: Accounting Web is a web appliction. Use to manage your accounting.
+Status: Developing
+
+
 Implement Accounting Web
 =====================================
-
 Firebase:
 - accounting application require a Firebase database to store it's data. Make sure to update the file "config.json" file.
 - go to firebase console https://console.firebase.google.com and create project, database.
