@@ -1,6 +1,6 @@
 Accounting Web
-
-Accounting Web is a web appliction. Use to manage your accounting.
+Detail : Accounting Web is a web appliction. Use to manage your accounting.
+Status : Developing
 
 Prerequisites:
 - Firebase
