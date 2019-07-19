@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>food manage - login</title>
+    <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="styles/all.css" rel="stylesheet">
+    <link href="styles/googleicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="styles/shards-dashboards.1.1.0.min.css">
+    <link rel="stylesheet" href="styles/extras.1.1.0.min.css">
+    <link rel="stylesheet" href="styles/site.css">
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/buttons.js"></script>
+    <script src="scripts/site.js"></script>
+    <script src="scripts/firebase.js"></script>
+    <script src="scripts/md5.js"></script>
+    <script>
+      $(function() {
+        let token = getCookie("token");
+        if(token != null) {
+          window.location.href = 'index.html';
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="noti"></div>
+    <div class="app flex-row align-items-center">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-5">
+            <div class="card-group">
+              <div class="card p-4">
+                <div class="card-body">
+                  <h1>Login</h1>
+                  <p class="text-muted">Sign In to your account</p>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="material-icons">person</i>
+                      </span>
+                    </div>
+                    <input class="form-control" type="text" name="email" placeholder="Email">
+                    <div class="invalid-feedback hidden-invalid" id="uinvalid"></div>
+                  </div>
+                  <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="material-icons">vpn_key</i>
+                      </span>
+                    </div>
+                    <input class="form-control" type="password" name="password" placeholder="Password">
+                    <div class="invalid-feedback hidden-invalid" id="pinvalid"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <button class="btn btn-primary px-4 check-login" type="button">Login</button>
+                    </div>
+                    <div class="col-6 text-right">
+                      <!-- <button class="btn btn-link px-0" type="button">Forgot password?</button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/popper.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/chart.min.js"></script>
+    <script src="scripts/shards.min.js"></script>
+    <script src="scripts/jquery.sharrre.min.js"></script>
+    <script src="scripts/extras.1.1.0.min.js"></script>
+    <script src="scripts/shards-dashboards.1.1.0.min.js"></script> -->
+  </body>
+</html>

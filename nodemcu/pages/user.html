@@ -1,0 +1,107 @@
+<style>
+  .paginationx {
+    display: inline-block;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.875rem;
+  }
+  
+  .paginationx a {
+    color: black;
+    float: left;
+    padding: 6px 12px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+  }
+  
+  .paginationx a.active {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid#007bff;
+  }
+  
+  .paginationx a:hover:not(.active) {background-color: #ddd;}
+  
+  .paginationx a:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  
+  .paginationx a:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+</style>
+
+<script>
+  $('.add-user').click(function(){
+    loadPage(this);
+  });
+  $('#delete-user').on('shown.bs.modal', function (e) {
+    let uid = $(e.relatedTarget).attr('uid');
+    $('.delete-u').attr('uid', uid);
+  });
+</script>
+
+<div class="noti"></div>
+<div class="main-content-container container-fluid px-4">
+  <!-- Page Header -->
+  <div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+      <span class="text-uppercase page-subtitle">Manages</span>
+      <h3 class="page-title">Users Manage</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card card-small mb-4">
+        <div class="card-header border-bottom">
+          <div class="row">
+            <div class="col-md-6">
+              <h5 class="m-1">Users</h5>
+            </div>
+            <div class="col-md-6 text-right">
+              <button class="add-user btn btn-accent px-2" name="muser"><i class="material-icons">add</i> Create User</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0 pb-3 text-center">
+          <table class="table mb-0" id="users">
+            <thead class="bg-light">
+              <tr>
+                <th scope="col" class="border-0">#</th>
+                <th scope="col" class="border-0">First Name</th>
+                <th scope="col" class="border-0">Last Name</th>
+                <th scope="col" class="border-0">Email</th>
+                <th scope="col" class="border-0">Phone</th>
+                <th scope="col" class="border-0" width="50">Edit</th>
+                <th scope="col" class="border-0" width="50">Delete</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="delete-user" class="modal fade">
+  <div class="modal-dialog modal-confirm2">
+    <div class="modal-content modal-content2">
+      <div class="modal-header2">
+        <div class="icon-box">
+          <i class="material-icons">close</i>
+        </div>				
+        <h4 class="modal-title">Are you sure?</h4>	
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body2">
+        <p>Do you really want to delete these records? This process cannot be undone.</p>
+      </div>
+      <div class="modal-footer2">
+        <button type="button" class="btn btn-danger delete-u" onclick="deleteUser(this)">Delete</button>
+        <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
