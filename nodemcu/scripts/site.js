@@ -59,7 +59,10 @@ $(function() {
 });
 
 setInterval(function () {
-    reloadChert()
+    let path = window.location.pathname.split('/');
+    if(path[path.length-1] == "index.html") {
+        reloadChert();
+    }
 }, 60000);
 
 function reloadChert() {
