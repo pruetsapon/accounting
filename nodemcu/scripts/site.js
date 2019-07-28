@@ -58,12 +58,12 @@ $(function() {
     });
 });
 
-setInterval(function () {
-    let path = window.location.pathname.split('/');
-    if(path[path.length-1] == "index.html") {
+const path = window.location.pathname.split('/');
+if(path[path.length-1] == "index.html" || getCookie("page") == "overview") {
+    setInterval(function () {
         reloadChert();
-    }
-}, 60000);
+    }, 60000);
+}
 
 function reloadChert() {
     var set = $('#report-set').val();
@@ -83,6 +83,7 @@ function initializeApp() {
 
 function loadPage(elem) {
     let page = $(elem).attr('name');
+    setCookie("page", page);
     $('#main-container').load(`pages/${page}.html`, {limit: 25}, 
         function (responseText, textStatus, req) {
             if(req.status == 404){
@@ -483,10 +484,12 @@ async function saveUser(uid) {
             fname: fname.val(),
             lname: lname.val(),
             tphone: tel.val(),
-            password: md5(password.val()),
             role: role.val(),
             uid: uid
         };
+        if(password.val() != "") {
+            user.password = md5(password.val());
+        }
         firebase.database().ref("users/" + user.uid + "/").update(user).then(function() {
             // let cuid = $('.create-user').attr('uid');
             // if(cuid == undefined) {
@@ -638,17 +641,24 @@ function validateLogin(email, password) {
     return checkLogin;
 }
 
+async function getUserByEmail(email) {
+    return await firebase.database().ref("users").orderByChild("email").equalTo(email).once("value");
+}
+
 async function validateUser(email, password, cpassword, fname, lname, tel, uid) {
     let validate = true;
     let emailVal = email.val();
-    let snapshot = await firebase.database().ref("users").orderByChild("email").equalTo(email.val()).once("value");
+    let snapshot = await getUserByEmail(email.val());
     let user = snapshot.val();
     if(uid == undefined) {
         if(!validateEmail(emailVal)) {
             validate = false;
             email.addClass("is-invalid");
             $('#invalid-e').text("Please enter email.");
-        } else if(user) {
+        } else {
+            email.removeClass("is-invalid");
+        }
+        if(user) {
             validate = false;
             email.addClass("is-invalid");
             $('#invalid-e').text("Already has email.");
