@@ -430,12 +430,15 @@ function updateRunning() {
     }
     let displayName = getCookie("displayName");
     let pdate = getStringDate(new Date());
+    let vid = $('.value-c').attr('value-id');
+    let logId = vid == undefined ? 1 : parseInt(vid);
     let setting = {
         amount: volume,
         date: pdate,
         uname: displayName,
         time: time,
-        running: running
+        running: running,
+        logId: logId
     };
     firebase.database().ref("setting").set(setting).then(function() {
         let status = running ? "running" : "stoped";
